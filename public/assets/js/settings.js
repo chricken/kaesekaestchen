@@ -1,8 +1,10 @@
 'use strict';
 
 const settings = {
-    players:[],
-    activePlayer:0
+    elements: {},
+    activePlayer: 0,
+    socketID:false,
 }
 
 export default settings;
+export const elements = settings.elements;

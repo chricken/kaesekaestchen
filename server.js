@@ -1,5 +1,5 @@
 'use strict';
-
+import './ws.js';
 import express from 'express';
 const server = express();
 
