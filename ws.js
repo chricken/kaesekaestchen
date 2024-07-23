@@ -1,6 +1,7 @@
 'use strict';
 
 import game from './game.js';
+import settings from './settings.js';
 import { WebSocketServer } from 'ws';
 
 const wss = new WebSocketServer({ port: 8000 });
@@ -29,6 +30,18 @@ const handleMsg = (msg, socket) => {
     }
 }
 
+const updatePlayer = socket => {
+    console.log('Updating');
+    socket.send(JSON.stringify({
+        type:'update',
+        payload:{
+            felder: settings.felder,
+            kantenHorz: settings.kantenHorz,
+            kantenVert: settings.kantenVert,
+        }
+    }))
+}
+
 const sendPlayerID = (id, socket) => {
     let payload = {
         id
@@ -48,6 +61,8 @@ const handleConnection = socket => {
     console.log('Verbindung hergestellt');
     socket.on('close', handleDisconnection);
     socket.on('message', msg => handleMsg(msg, socket));
+
+    updatePlayer(socket);
 }
 
 const handleListening = () => {
