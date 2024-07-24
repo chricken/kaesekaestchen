@@ -25,21 +25,28 @@ const handleMsg = (msg, socket) => {
         case 'nextPlayer':
             game.nextPlayer()
             break;
+        case 'handleClick':
+            game.handleClick(msg.payload)
+            break;
         default:
             break;
     }
 }
 
-const updatePlayer = socket => {
+const updatePlayer = () => {
     console.log('Updating');
-    socket.send(JSON.stringify({
-        type:'update',
-        payload:{
-            felder: settings.felder,
-            kantenHorz: settings.kantenHorz,
-            kantenVert: settings.kantenVert,
-        }
-    }))
+    wss.clients.forEach(socket => {
+        socket.send(JSON.stringify({
+            type: 'update',
+            payload: {
+                width: settings.spielfeldWidth,
+                height: settings.spielfeldHeight,
+                felder: settings.felder,
+                kantenHorz: settings.kantenHorz,
+                kantenVert: settings.kantenVert,
+            }
+        }))
+    })
 }
 
 const sendPlayerID = (id, socket) => {
@@ -72,3 +79,9 @@ const handleListening = () => {
 
 wss.on('listening', handleListening);
 wss.on('connection', handleConnection);
+
+const ws = {
+    updatePlayer
+}
+
+export default ws;

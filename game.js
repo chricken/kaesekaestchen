@@ -1,6 +1,7 @@
 'use strict';
 
 import settings from './settings.js';
+import ws from './ws.js';
 
 class Player {
     constructor() {
@@ -23,7 +24,7 @@ class Feld {
     onChange(player) {
         this.kanten++;
         if (this.kanten >= 4) {
-            this.player = player
+            this.player = settings.activePlayer
         }
     }
 }
@@ -35,34 +36,24 @@ class Kante {
         this.felder = [];
     }
     onClick(player) {
-        this.clicked = player;
+        console.log(settings);
+        this.clicked = settings.activePlayer;
         this.felder.forEach(feld => {
             feld.onChange(player);
         })
+        game.incrementPlayer();
+        
     }
     subscribeSelected(feld) {
         this.felder.push(feld)
     }
 }
 
-// Die Kanten, die links und rechts der Felder stehen
-/*
-class KanteVert {
-    constructor(x, y) {
-        Object.assign(this, { x, y });
-        this.clicked = false;
-    }
-    onClick(player) {
-        this.clicked = true;
-    }
-}
-    */
-
 const game = {
     players: [],
     size: 20,
     incrementPlayer() {
-        settings.activePlayer = (settings.activePlayer + 1) % settings.players.length;
+        // settings.activePlayer = (settings.activePlayer + 1) % settings.players.length;
         console.log('Active Player: ', settings.players[settings.activePlayer]);
     },
     removePlayer(payload) {
@@ -75,8 +66,23 @@ const game = {
 
         callback(player.id, socket);
     },
-    nextPlayer(payload) {
-
+    handleClick(payload) {
+        console.log(payload);
+        if (payload.type == 'horz') {
+            let kante = settings.kantenHorz.find(
+                kante => kante.x == payload.x && kante.y == payload.y
+            )
+            kante.onClick(settings.activePlayer);
+            console.log(kante);
+        } else {
+            let kante = settings.kantenVert.find(
+                kante => kante.x == payload.x && kante.y == payload.y
+            )
+            kante.onClick();
+            console.log(kante);            
+        }
+        game.incrementPlayer();
+        ws.updatePlayer();
     },
     init() {
         // Erstmal alle Kanten erzeugen, weil die Felder bei diesen subscriben soll
@@ -111,9 +117,9 @@ const game = {
             }
         }
 
-        console.log('Felder', settings.felder);
-        console.log('Horz', settings.kantenHorz);
-        console.log('Vert', settings.kantenVert);
+        // console.log('Felder', settings.felder);
+        // console.log('Horz', settings.kantenHorz);
+        // console.log('Vert', settings.kantenVert);
 
     },
 }

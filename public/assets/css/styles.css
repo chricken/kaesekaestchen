@@ -1,0 +1,19 @@
+.feld, .kanteHorz, .kanteVert {
+    position: absolute;
+    display: block;
+    border: 1px solid #000;
+    background-color: #ccc;
+    border-radius: 5px;
+}
+.kanteHorz:hover {
+    border: 2px solid #000;
+    background-color: #f00;
+
+}
+.kanteHorz.clicked, .kanteVert.clicked {
+    background-color: #000;
+
+}
+.feld.filled {
+    background-color: #555;
+}

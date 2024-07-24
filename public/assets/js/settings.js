@@ -2,8 +2,12 @@
 
 const settings = {
     elements: {},
-    activePlayer: 0,
-    socketID:false,
+    socketID: false,
+    wFeld: 0,
+    vpWidth: window.innerWidth,
+    vpHeight: window.innerHeight,
+    outerPadding: 50,
+    innerPadding:8,
 }
 
 export default settings;

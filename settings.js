@@ -1,11 +1,13 @@
 'use strict';
 
 const settings = {
-    spielfeldWidth: 10,
-    spielfeldHeight: 10,
-    felder:[],
-    kantenHorz:[],
-    kantenVert:[],
+    spielfeldWidth: 25,
+    spielfeldHeight: 20,
+    felder: [],
+    kantenHorz: [],
+    kantenVert: [],
+    players:[],
+    activePlayer: 0,
 }
 
 export default settings;

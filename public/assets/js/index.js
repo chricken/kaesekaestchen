@@ -1,23 +1,14 @@
 'use strict';
 
-import { elements } from './settings.js';
-import game from './game.js';
+import dom from './dom.js';
 
 // KONSTANTEN / VARIABLEN
 
-// FUNKTIONEN
-const domMapping = () => {
-    elements.btn = document.querySelector('#btn');
-}
-
-const appendEventlisteners = () => {
-    elements.btn.addEventListener('click', game.init);
-}
 
 const init = () => {
-    domMapping();
-    appendEventlisteners();
-
+    dom.mapping();
+    dom.appendEventListeners();
+    dom.handleResize();
 }
 
 // INIT
